@@ -17,7 +17,7 @@ To build and run the Lab Report Validating API, follow these steps:
 
 1. Clone the repository from GitHub:
    
-   `git clone https://github.com/Arghajit08/NIC.git `
+   `git clone https://github.com/Arghajit08/project.git `
    
 2. Navigate to the project directory:
    
