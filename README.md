@@ -17,7 +17,7 @@ To build and run the Lab Report Validating API, follow these steps:
 
 1. Clone the repository from GitHub:
    
-   `git clone `
+   `git clone https://github.com/Arghajit08/NIC.git `
    
 2. Navigate to the project directory:
    
@@ -61,7 +61,7 @@ The API will be accessible at `http://localhost:8080`.
 |  age        |     integer    |      Particular Test Age       |
 
 <center>
-<img src="" alt="thunderclient-header">
+<img src="./images/Screenshot from 2023-07-04 16-58-23.png" alt="thunderclient-header">
 </center>
 
 
