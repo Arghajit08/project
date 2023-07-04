@@ -1,17 +1,27 @@
-# eHospital LIS Image OCR API
-The eHospital LIS Image OCR API is a web service that allows you to extract text from images and convert it into JSON or plain text formats. This API utilizes the Tesseract OCR engine to perform optical character recognition on the provided image file.
+# eHospital Lab Report Validating API
+The Lab Report Validating API is a web service that allows you to validate data from lab report by checking it in existing patient's database and to show error messages as response output.If patients data is showing high,low or normal result,the API will also reflect respective response. 
+
+## Create Database
+To create Postgres database in CLI, follow these steps:
+
+1.Start Postgresql Service:
+
+   `psql `
+
+2.Create Database:
+
+   `CREATE DATABASE test `
 
 ## Build and Run
-
-To build and run the Lab Report OCR API, follow these steps:
+To build and run the Lab Report Validating API, follow these steps:
 
 1. Clone the repository from GitHub:
    
-   `git clone https://github.com/keraskp/imageOCR.git`
+   `git clone `
    
 2. Navigate to the project directory:
    
-   `cd imageOCR`
+   `cd project`
    
 3. Build the project using Maven:
    
@@ -19,168 +29,82 @@ To build and run the Lab Report OCR API, follow these steps:
    
 4. Run the application:
    
-   `java -jar target/imageOCR.jar`
+   `java -jar target/project-0.0.1-SNAPSHOT.jar`
    
+## INSERT DATA INTO TABLE
+To create Postgres database in CLI, follow these steps:
+
+1.Insert Data:
+
+   `INSERT INTO test(id,name,agefrom,ageto,gender,minresult,maxresult,unit) VALUES (1,'hemoglobin',13,50,'M',12,16,'g/dl'); `
+
+2.Follow above step to insert more data by changing respective values.
 
 The API will be accessible at `http://localhost:8080`.
 
-## Usage
-### Image to Json
-**Endpoint:** `/image-to-json`
+## Description
+### Validating Report Data
+**Endpoint:** `/task/reportvalidity`
 
 **Method:** POST
 
-**Description:** Extracts text from the uploaded image file and converts it into JSON format.
+**Description:** Checks Report Data and validate it using existing database and return respective Response message.
 
 **Request Parameters:**
 
 | Parameter   |      Type      |           Description          |
 |-------------|:--------------:|-------------------------------:|
-|    image    |  report.jpg    | The image file to be processed |
+|  test_id    |     integer    |      Particular test id number |
+|  result     |     float      |      Particular Test Result    |
+|  unit       |     string     |      Particular Test Unit      |
+|  gender     |     string     |      Particular Test Gender    |
+|  age        |     integer    |      Particular Test Age       |
 
 <center>
-<img src="./assets/images/postman-header.png" alt="postman-header">
+<img src="" alt="thunderclient-header">
 </center>
 
-<br>
-
-**Sample Image:**
-
-<center>
-<img src="sample/input/report.jpg" alt= “screenshot.png” width="50%">
-</center>
 
 **Success Response:**
 
+1. Result Exceeding Upper Limit
 - *Status Code:* 200 OK
-- *Content Type:* application/json
-- *Body:* 
+- *Body:* `High->(test_name)`
 
-```json
-{
-    "": "150Year(s) (Male",
-    "Age: ": "50 years 10 months 16 days",
-    "Lab Reference NO: ": "52",
-    "Page ": "1 of",
-    "SERUM CALCIUM ": "7.2 mg/dL 9-11 mgidL Verification Comment",
-    "Sample Collection Date: ": "06/06:2023 05:47 PM",
-    "SERUM POTASSIUM ": "45 mEqL 35-55mEQL  Verification Comment",
-    "HBAL ": "52 % -650 Verification Comment",
-    "Unit Name: Uit ": "1",
-    "SERUM SODIUM ": "142 mEQL 135- 145 mEqL",
-    "UHID: ": "2022010049138",
-    "SERUM UREA ": "35 mg/dL 15-40 mg/dL",
-    "SERUM CREATININE ": "204 mgldL 06- 1.5 mg/dL",
-    "SERUM URIC ACID ": "6.7 mglL o mg/dL 0Year(s) - Verification Comment",
-    "Government of Tripura Agartala, Tripura West ": "799006",
-    "Report Upload Date: ": "06/062023 06:13 PM",
-    "‘Sample Received Date: ": "06/06/2023 05:48 PM",
-    "Order Date: ": "06/062023",
-    "Oear - ": "50Yeat",
-    "Reg Date: ": "210772022 1159 AM"
-}
-```
+2. Result Below Lower Limit
+- *Status Code:* 200 OK
+- *Body:* `Low->(test_name)`
+
+3.1. Result In Range
+- *Status Code:* 200 OK
+- *Body:* `Normal->(test_name)`
+
 
 
 **Failure Response:**
 
-1. No file provided
+1. Patient Age Not In Range
 - *Status Code:* 400 Bad Request
-- *Body:* `Image File is Required`
+- *Body:* `Age Not In Range`
 
-2. Non-image file provided
+2. Particular Test_ID Doesnot Exist
 - *Status Code:* 400 Bad Request
-- *Body:* `Error! provide proper image file`
+- *Body:* `Invalid Report`
 
-3. Issue with image to text conversion
-- *Status Code:* 500 Internal Server Error
-- *Body:* `Error extracting text from image`
-
-
-### Image to Text
-**Endpoint:** `/image-to-text`
-
-**Method:** POST
-
-**Description:** Extracts text from the uploaded image file in plain text format.
-
-Request Parameters:
-| Parameter   |      Type      |           Description          |
-|-------------|:--------------:|-------------------------------:|
-|    image    |  report.jpg    | The image file to be processed |
-
-**Success Response:**
-
-- *Status Code:* 200 OK
-- *Content Type:* application/json
-- *Body:* 
-
-```text
-g;la Government Medical College & Gobind Ballay Pant Hospital
-Government of Tripura Agartala, Tripura West 799006
-LABORATORY OBSERVATION REPORT
-UHID: 2022010049138
-Patient Name: Mr. TEST TEST
-Sex: Male
-Order By: Dr. IPD Doctor Incharge.
-Unit Name: Uit 1
-Sample Collection Date: 06/06:2023 05:47 PM
-Lab Name: BIOCHEMISTRY
-Department: Medicine
-Reg Date: 210772022 1159 AM
-‘Ward Name : Male Medicine
-Age: 50 years 10 months 16 days
-Order Date: 06/062023
-Unit In-charge: Dr. Arunsba Dasgupta
-‘Sample Received Date: 06/06/2023 05:48 PM
-Lab Reference NO: 52
-Report Upload Date: 06/062023 06:13 PM
-Bio-Cheistry Sub Centre ™
-Test Name Result ification Comment
-HBAL 52 % -650 Verification Comment
-KIDNEY FUNCTION TEST
-SERUM UREA 35 mg/dL 15-40 mg/dL
-SERUM CREATININE 204 mgldL 06- 1.5 mg/dL.
-Oear - 50Yeat)
-SERUM URIC ACID 6.7 mglL o mg/dL 0Year(s) - Verification Comment
-150Year(s) (Male)
-ELECTROLYTE PROFILE
-SERUM SODIUM 142 mEQL 135- 145 mEqL
-SERUM POTASSIUM 45 mEqL 35-55mEQL  Verification Comment
-SERUM CALCIUM 7.2 mg/dL 9-11 mgidL Verification Comment
-Entered By Verified By
-(Mr-HOSPITAL ADMIN) (Mr-HOSPITAL ADMIN)
-#Thi
-Page 1 of |
-```
-
-
-**Failure Response:**
-
-1. No file provided
-- *Status Code:* 400 Bad Request
-- *Body:* `Image File is Required`
-
-2. Non-image file provided
-- *Status Code:* 400 Bad Request
-- *Body:* `Error! provide proper image file`
-
-3. Issue with image to text conversion
-- *Status Code:* 500 Internal Server Error
-- *Body:* `Error extracting text from image`
 
 
 
 ## Libraries and Tools Used
 
 The following libraries and tools are used in this API:
-- Language : <img src="./assets/images/icons8-java-48.png" height=25> Java (JDK 17) 
-- Framework: <img src="./assets/images/icons8-spring-boot-48.png" height=25> SpringBoot (3.0.8) 
+- Language : <img src="./assets/images/icons8-java-48.png" height=25> Java (JDK 20) 
+- Framework: <img src="./assets/images/icons8-spring-boot-48.png" height=25> SpringBoot (3.1.2 Snapshot) 
 
 ## Dependencies
 Maven Dependencies used:
-- tess4j: The library provides optical character recognition (OCR) support for: TIFF, JPEG, GIF, PNG, and BM(provided in this project)
-- org.json: JSON is a light-weight, language independent, data interchange format
+- spring-boot-starter-data-jpa:
+- spring-boot-starter-jdbc:
+- Postgresql Driver: 
 - spring-boot-starter-web: Starter for building web, including RESTful, applications using Spring MVC. Uses Tomcat as the default embedded container
 
 
@@ -189,4 +113,4 @@ This API is open source and licensed under the MIT License.
 
 
 ## Contributions
-Contributions to this project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request on the project's repository or mail me at suggi.aditya@gmail.com
+Contributions to this project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request on the project's repository or mail me at arghajitbhowmik08@gmail.com
