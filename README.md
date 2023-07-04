@@ -102,10 +102,10 @@ The following libraries and tools are used in this API:
 
 ## Dependencies
 Maven Dependencies used:
-- spring-boot-starter-data-jpa:
-- spring-boot-starter-jdbc:
-- Postgresql Driver: 
-- spring-boot-starter-web: Starter for building web, including RESTful, applications using Spring MVC. Uses Tomcat as the default embedded container
+- spring-boot-starter-data-jpa
+- spring-boot-starter-jdbc
+- Postgresql Driver
+- spring-boot-starter-web
 
 
 ## License
